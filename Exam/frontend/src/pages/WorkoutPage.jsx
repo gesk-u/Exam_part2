@@ -1,3 +1,6 @@
+
+
+
 import { useParams, useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import { getWorkoutById, deleteWorkout } from "../utils/api";
@@ -5,14 +8,14 @@ import { FIELDS, WORKOUT_NAME, ROUTES, TITLE_FIELD } from "../config";
 import { formatValue } from "../utils/fields";
 
 const WorkoutPage = ({ isAuthenticated }) => {
-  const { id } = useParams();
+  const { workoutId } = useParams();
   const navigate = useNavigate();
-  const { data: workout, loading, error } = useFetch(() => getWorkoutById(id), [id]);
+  const { data: workout, loading, error } = useFetch(() => getWorkoutById(workoutId), [workoutId]);
 
   const onDelete = async () => {
     if (!window.confirm(`Delete this ${WORKOUT_NAME}?`)) return;
     try {
-      await deleteWorkout(id);
+      await deleteWorkout(workoutId); // api.js V2 adds the token
       navigate(ROUTES.home);
     } catch (err) {
       alert(err.message);

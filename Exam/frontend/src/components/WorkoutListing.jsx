@@ -4,7 +4,7 @@ import { formatValue } from "../utils/fields";
 
 const WorkoutListing = ({ workout }) => (
   <div className="workout-preview">
-    <Link to={`${ROUTES.details}/${workout._id}`}>
+    <Link to={`${ROUTES.details}/${workout.workoutId}`}>
       <h2>{workout[TITLE_FIELD]}</h2>
     </Link>
     {FIELDS.filter((f) => LIST_FIELDS.includes(f.name)).map((f) => (
