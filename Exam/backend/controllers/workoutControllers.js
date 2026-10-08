@@ -5,14 +5,29 @@ const NAME = "Workout"
 
 // GET /api/workouts — ALREADY IMPLEMENTED
 const getAllWorkouts = async (req, res) => {
-  const workouts = await Workout.find({});
-  res.json(workouts);
+  try {
+    const workouts = await Workout.find({});
+    res.status(200).json(workouts);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to retrieve workouts" });
+  }
 };
 
-// POST /api/workouts — ALREADY IMPLEMENTED
+// POST /workouts
 const createWorkout = async (req, res) => {
-  const workout = await Workout.create(req.body);
-  res.status(201).json(workout);
+  try {
+    //const user_id = req.user._id;
+    const newWorkout = new Workout({ ...req.body }); // {...req.body, user_id}
+    await newWorkout.save();
+    res.status(201).json(newWorkout);
+
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ error: error.message });
+    }
+    console.error("Error creating workout:", error);
+    res.status(500).json({ error: "Server Error" });
+  }
 };
 
 // TODO (Q1): Implement getWorkoutById
